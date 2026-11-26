@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10151d">
+<meta name="description" content="Panel personal de estadísticas y control de riesgo para juegos de casino.">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Casino Bot Pro</title>
+<style>
+:root{--bg:#0b1017;--panel:#141d28;--panel2:#1b2734;--text:#f3f6fa;--muted:#9eacbb;--green:#38d996;--gold:#e9bd65;--red:#ff7272;--line:#293747}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#182637 0,#0b1017 48%);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.app{max-width:760px;margin:auto;padding:18px 15px 42px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 18px}.brand{display:flex;align-items:center;gap:11px}.logo{width:43px;height:43px;border-radius:14px;background:linear-gradient(135deg,#2bdc9a,#13865f);display:grid;place-items:center;font-size:23px;box-shadow:0 8px 24px #1bba7c33}.brand h1{font-size:19px;margin:0;letter-spacing:.4px}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}.pill{border:1px solid #28674f;color:var(--green);padding:6px 10px;border-radius:99px;font-size:11px}
+.hero{background:linear-gradient(120deg,#183b35,#172735 70%);border:1px solid #2a594d;border-radius:20px;padding:18px;margin-bottom:14px}.eyebrow{color:#9de7c9;font-size:11px;text-transform:uppercase;letter-spacing:1.2px}.balance{font-size:32px;font-weight:800;margin:5px 0}.sub{color:#c2d3d1;font-size:12px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:16px}.stat{background:#ffffff0d;border:1px solid #ffffff12;border-radius:12px;padding:10px}.stat b{display:block;font-size:17px}.stat span{font-size:11px;color:#bdc9d1}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:14px 0}.tab{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:12px;padding:11px 4px;font-size:12px}.tab.active{border-color:#329c76;background:#15352e;color:#a7f0d2}.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:16px;margin:12px 0}.card h2{font-size:16px;margin:0 0 12px}.muted{color:var(--muted);font-size:12px;line-height:1.5}
+label{display:block;font-size:12px;color:#bdc9d5;margin:11px 0 6px}input,select{width:100%;background:#0d151e;color:var(--text);border:1px solid #344657;border-radius:10px;padding:12px;font:inherit;outline:none}input:focus,select:focus{border-color:var(--green)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:11px;padding:12px 14px;font-weight:700;background:var(--green);color:#062217;width:100%;margin-top:13px}.btn.secondary{background:#263646;color:var(--text);border:1px solid #3b5063}.btn.danger{background:#48262b;color:#ffb0b0;border:1px solid #743d45}.notice{background:#302a1d;border:1px solid #67532d;color:#f0dba9;border-radius:12px;padding:12px;font-size:12px;line-height:1.5;margin:12px 0}.hidden{display:none!important}.history{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}.history:last-child{border:0}.positive{color:var(--green)}.negative{color:var(--red)}.bars{display:flex;align-items:end;gap:5px;height:120px;margin:14px 0 4px}.bar{flex:1;min-width:0;background:linear-gradient(#43dca2,#1d785b);border-radius:5px 5px 0 0;position:relative}.bar small{position:absolute;bottom:-19px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--muted)}.result{background:#0d151e;border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:12px;font-size:13px;line-height:1.5}.foot{text-align:center;color:#778797;font-size:11px;margin-top:22px}
+@media(max-width:390px){.stats{grid-template-columns:1fr 1fr}.tabs{grid-template-columns:repeat(2,1fr)}.balance{font-size:27px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="brand"><div class="logo">♠</div><div><h1>CASINO BOT PRO</h1><p>Analizador personal · BetPlay</p></div></div><span class="pill">● LOCAL</span></header>
+<section class="hero"><div class="eyebrow">Panel de control</div><div class="balance" id="balance">$20.000 COP</div><div class="sub">Capital de referencia · No representa dinero en tu cuenta de BetPlay</div>
+<div class="stats"><div class="stat"><b id="records">0</b><span>Registros</span></div><div class="stat"><b id="net">$0</b><span>Balance anotado</span></div><div class="stat"><b id="risk">0%</b><span>Presupuesto usado</span></div></div></section>
+<div class="tabs">
+<button class="tab active" data-tab="registro">📝 Registro</button><button class="tab" data-tab="ruleta">🎡 Ruleta</button><button class="tab" data-tab="blackjack">🃏 Blackjack</button><button class="tab" data-tab="aviator">✈️ Aviator</button>
+</div>
+<section id="registro" class="pane">
+<div class="card"><h2>Registrar una observación</h2><p class="muted">Guarda resultados que hayas observado. El registro no predice la siguiente ronda.</p>
+<label>Juego</label><select id="game"><option>Ruleta</option><option>Blackjack</option><option>Aviator</option><option>Tragamonedas</option></select>
+<div class="grid2"><div><label>Valor apostado (COP)</label><input id="stake" type="number" min="0" value="500"></div><div><label>Resultado neto (COP)</label><input id="netInput" type="number" value="0"></div></div>
+<label>Resultado / observación</label><input id="observation" placeholder="Ej. salió el 17 rojo / multiplicador 2.4x">
+<button class="btn" id="save">Guardar registro</button>
+</div>
+<div class="card"><h2>Historial reciente</h2><div id="history" class="muted">Aún no hay registros.</div><button class="btn secondary" id="export">Exportar historial CSV</button><button class="btn danger" id="clear">Borrar historial</button></div>
+</section>
+<section id="ruleta" class="pane hidden">
+<div class="card"><h2>🎡 Frecuencia de ruleta</h2><p class="muted">Registra números observados del 0 al 36. Las frecuencias pasadas no cambian la probabilidad del próximo giro en una ruleta justa.</p>
+<label>Número observado (0–36)</label><input id="rouletteNumber" type="number" min="0" max="36" placeholder="Ej. 17"><button class="btn" id="addNumber">Añadir número</button>
+<div class="result" id="rouletteStats">Sin datos todavía.</div><button class="btn secondary" id="clearNumbers">Borrar números</button></div>
+</section>
+<section id="blackjack" class="pane hidden">
+<div class="card"><h2>🃏 Ayuda de estrategia básica</h2><p class="muted">Orientación educativa simplificada. La decisión correcta depende de reglas como número de mazos, si el crupier pide con soft 17 y opciones de doblar/dividir.</p>
+<div class="grid2"><div><label>Tu total</label><input id="playerTotal" type="number" min="4" max="21" placeholder="Ej. 16"></div><div><label>Carta visible del crupier</label><select id="dealer"><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">As</option></select></div></div>
+<button class="btn" id="advice">Consultar orientación</button><div class="result" id="blackjackResult">Ingresa los valores para ver una orientación general.</div></div>
+</section>
+<section id="aviator" class="pane hidden">
+<div class="card"><h2>✈️ Historial de multiplicadores</h2><p class="muted">Anota multiplicadores publicados en rondas anteriores. No permiten predecir la próxima ronda ni detectar un patrón fiable.</p>
+<label>Multiplicador observado (ej. 2.35)</label><input id="multiplier" type="number" min="1" step="0.01" placeholder="2.35"><button class="btn" id="addMultiplier">Añadir multiplicador</button><div class="result" id="aviatorStats">Sin datos todavía.</div><button class="btn secondary" id="clearMultipliers">Borrar multiplicadores</button></div>
+</section>
+<section class="card"><h2>🎰 Tragamonedas · Información</h2><p class="muted">Consulta el RTP y la volatilidad en la información oficial de cada juego. El RTP es una expectativa teórica a largo plazo, no una promesa de retorno en una sesión.</p><div class="notice">No existe un método fiable para anticipar giros, multiplicadores o resultados aleatorios. No persigas pérdidas. Con tu presupuesto de referencia de $20.000 COP, lo más prudente es probar primero sin dinero real.</div></section>
+<div class="foot">Casino Bot Pro · Los datos se guardan únicamente en este dispositivo.<br>No está afiliado ni conectado a BetPlay.</div>
+</div>
+<script>
+const $=id=>document.getElementById(id), fmt=n=>'$'+Number(n).toLocaleString('es-CO')+' COP';
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+let records=load('cbp_records',[]), numbers=load('cbp_numbers',[]), multipliers=load('cbp_mults',[]);
+function persist(){localStorage.setItem('cbp_records',JSON.stringify(records));localStorage.setItem('cbp_numbers',JSON.stringify(numbers));localStorage.setItem('cbp_mults',JSON.stringify(multipliers));render()}
+function render(){
+$('records').textContent=records.length;
+let n=records.reduce((s,r)=>s+r.net,0), spent=records.reduce((s,r)=>s+r.stake,0);
+$('net').textContent=(n>=0?'+':'')+fmt(n);$('net').className=n>=0?'positive':'negative';
+$('risk').textContent=Math.min(100,Math.round(spent/20000*100))+'%';
+$('history').innerHTML=records.length?records.slice().reverse().slice(0,15).map(r=>`<div class="history"><span><b>${esc(r.game)}</b><br><small>${esc(r.obs)}</small><br><small>${fmt(r.stake)} apostado</small></span><b class="${r.net>=0?'positive':'negative'}">${r.net>=0?'+':''}${fmt(r.net)}</b></div>`).join(''):'Aún no hay registros.';
+$('rouletteStats').innerHTML=rouletteSummary();$('aviatorStats').innerHTML=aviatorSummary();
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.pane').forEach(x=>x.classList.toggle('hidden',x.id!==b.dataset.tab))});
+$('save').onclick=()=>{let stake=Number($('stake').value),net=Number($('netInput').value),obs=$('observation').value.trim();if(!obs||stake<0||!Number.isFinite(stake)||!Number.isFinite(net)){alert('Completa una observación y valores válidos.');return}records.push({game:$('game').value,stake,net,obs,date:new Date().toISOString()});$('observation').value='';$('netInput').value=0;persist()};
+$('clear').onclick=()=>{if(confirm('¿Borrar todo el historial?')){records=[];persist()}};
+$('export').onclick=()=>{let rows=[['Juego','Apuesta COP','Resultado neto COP','Observación','Fecha'],...records.map(r=>[r.game,r.stake,r.net,r.obs,r.date])];let csv=rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='casino-bot-historial.csv';a.click();URL.revokeObjectURL(a.href)};
+function rouletteSummary(){if(!numbers.length)return'Sin datos todavía.';let counts=Array(37).fill(0);numbers.forEach(n=>counts[n]++);let max=Math.max(...counts),hot=counts.map((v,i)=>({v,i})).filter(x=>x.v===max&&max>0).map(x=>x.i);let reds=[1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];let red=numbers.filter(n=>reds.includes(n)).length,black=numbers.filter(n=>n!==0&&!reds.includes(n)).length,zero=numbers.length-red-black;return `<b>${numbers.length} giros registrados</b><br>Rojo: ${red} · Negro: ${black} · Cero: ${zero}<br>Más repetido en esta muestra: ${hot.join(', ')} (${max} veces).<div class="muted">Frecuencia descriptiva, no pronóstico.</div>`}
+$('addNumber').onclick=()=>{let n=Number($('rouletteNumber').value);if(!Number.isInteger(n)||n<0||n>36){alert('Ingresa un número entre 0 y 36.');return}numbers.push(n);$('rouletteNumber').value='';persist()};
+$('clearNumbers').onclick=()=>{numbers=[];persist()};
+$('advice').onclick=()=>{let p=Number($('playerTotal').value),d=Number($('dealer').value);let msg='';if(!Number.isInteger(p)||p<4||p>21){msg='Ingresa un total válido entre 4 y 21.'}else if(p>=17){msg='Con 17 o más, normalmente se recomienda plantarse.'}else if(p<=11){msg='Con 11 o menos, normalmente se recomienda pedir carta.'}else if(p>=13&&p<=16&&d>=2&&d<=6){msg='Con 13–16 frente a 2–6, normalmente se recomienda plantarse.'}else if(p>=12&&p<=16&&d>=7){msg='Con 12–16 frente a 7–As, normalmente se recomienda pedir carta.'}else{msg='La decisión depende de las reglas y de si tu mano es dura o blanda. Consulta una tabla de estrategia básica para las reglas exactas.'}$('blackjackResult').textContent=msg+' Esta es una orientación general, no garantiza ganar.'};
+function aviatorSummary(){if(!multipliers.length)return'Sin datos todavía.';let sorted=[...multipliers].sort((a,b)=>a-b),avg=multipliers.reduce((a,b)=>a+b,0)/multipliers.length,med=sorted[Math.floor(sorted.length/2)],under2=multipliers.filter(x=>x<2).length;return `<b>${multipliers.length} rondas anotadas</b><br>Promedio: ${avg.toFixed(2)}x · Mediana: ${med.toFixed(2)}x<br>Menores de 2x: ${under2} (${Math.round(under2/multipliers.length*100)}%)<div class="muted">Resumen del pasado; no predice la siguiente ronda.</div>`}
+$('addMultiplier').onclick=()=>{let n=Number($('multiplier').value);if(!Number.isFinite(n)||n<1){alert('Ingresa un multiplicador válido de 1 o más.');return}multipliers.push(n);$('multiplier').value='';persist()};
+$('clearMultipliers').onclick=()=>{multipliers=[];persist()};
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body></html>
